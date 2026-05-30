@@ -1,0 +1,44 @@
+name: CI — React Build
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: npm install & build
+    runs-on: ubuntu-latest
+
+    container:
+      image: node:18-alpine
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node18-${{ hashFiles('package-lock.json') }}
+          restore-keys: node18-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        env:
+          CI: false
+        run: npm run build
+
+      - name: Confirm build output exists
+        run: |
+          test -d build && echo "Build succeeded — ./build directory present."
