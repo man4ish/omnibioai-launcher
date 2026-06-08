@@ -317,6 +317,12 @@ body {
   background: #0d2137;
 }
 
+/* ── IDE status pulse ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
 /* ── Toast ── */
 .toast {
   position: fixed;

@@ -1,0 +1,38 @@
+services:
+  jupyter:
+    image: ghcr.io/man4ish/omnibioai-jupyter:1.0
+    container_name: omnibioai-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ${OMNIBIOAI_DATA_DIR:-./data}:/home/jovyan/data
+      - ${OMNIBIOAI_WORK_DIR:-./work}:/home/jovyan/work
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN:-omnibioai}
+      - GRANT_SUDO=yes
+    restart: unless-stopped
+
+  rstudio:
+    image: ghcr.io/man4ish/omnibioai-rstudio:1.0
+    container_name: omnibioai-rstudio
+    ports:
+      - "8787:8787"
+    volumes:
+      - ${OMNIBIOAI_DATA_DIR:-./data}:/home/rstudio/data
+      - ${OMNIBIOAI_WORK_DIR:-./work}:/home/rstudio/work
+    environment:
+      - PASSWORD=${RSTUDIO_PASSWORD:-omnibioai}
+      - ROOT=TRUE
+    restart: unless-stopped
+
+  vscode:
+    image: ghcr.io/man4ish/omnibioai-vscode:1.0
+    container_name: omnibioai-vscode
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${OMNIBIOAI_DATA_DIR:-./data}:/home/coder/data
+      - ${OMNIBIOAI_WORK_DIR:-./work}:/home/coder/work
+    environment:
+      - PASSWORD=${VSCODE_PASSWORD:-omnibioai}
+    restart: unless-stopped
