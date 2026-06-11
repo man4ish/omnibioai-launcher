@@ -15,4 +15,4 @@ COPY server.js /app/server.js
 RUN echo '{"dependencies":{"express":"^4.18.0"}}' > /app/package.json && \
     cd /app && npm install --production
 EXPOSE 5190
-CMD sh -c "nginx && node /app/server.js"
+CMD sh -c "nginx && exec node /app/server.js"
